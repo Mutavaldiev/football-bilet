@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Buy Ticket{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form-card">
+        <h1>Buy Ticket</h1>
+        <h3>
+            {{ game.team_home.name }}
+            VS
+            {{ game.team_away.name }}
+        </h3>
+        <p>{{ game.stadium }}, {{ game.city }}</p>
+        <p>{{ game.date|date:"d M Y H:i" }}</p>
+        <h2 class="price">
+            {{ game.ticket_price }} TJS
+        </h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Number of Tickets</label>
+            <input type="number" name="quantity" min="1" max="10" value="1" required>
+            <label>Sector</label>
+            <select name="sector" required>
+                <option value="A">Sector A</option>
+                <option value="B">Sector B</option>
+                <option value="C">Sector C</option>
+                <option value="VIP">VIP</option>
+            </select>
+            <label>Row</label>
+            <input type="number" name="row" min="1" required >
+            <label>Starting Seat Number</label>
+            <input type="number" name="seat" min="1" required>
+            <button type="submit" class="main-button">Save & Buy Ticket</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

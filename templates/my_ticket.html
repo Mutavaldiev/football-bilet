@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}My Tickets{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="section-title">My Tickets</h1>
+    <div class="ticket-grid">
+        {% for order in orders %}
+
+            <div class="ticket-card">
+
+                <span class="sport-label">
+                    {{ order.game.category.name }}
+                </span>
+
+                <h2>
+                    {{ order.game.team_home.name }}
+                    VS
+                    {{ order.game.team_away.name }}
+                </h2>
+                <p>📍 {{ order.game.stadium }}</p>
+                <p>📅 {{ order.game.date|date:"d M Y H:i" }}</p>
+                <hr>
+                <h3>Ticket Information</h3>
+                {% for ticket in order.tickets.all %}
+                    <p>
+                        Sector: {{ ticket.sector }} |
+                        Row: {{ ticket.row }} |
+                        Seat: {{ ticket.seat_number }}
+                    </p>
+                {% endfor %}
+                <p>Quantity: {{ order.quantity }}</p>
+                <h3 class="price">
+                    Total: {{ order.total_price }} TJS
+                </h3>
+                <form method="POST"
+                      action="{% url 'cancel_ticket' order.id %}"
+                      onsubmit="return confirm('Оё билетро бекор кардан мехоҳед?');">
+                    {% csrf_token %}
+                    <button type="submit" class="cancel-button">Cancel Ticket</button>
+                </form>
+            </div>
+        {% empty %}
+            <div class="empty">
+                <h2>You have no tickets!</h2>
+                <a href="{% url 'home' %}" class="main-button"> Find Games</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

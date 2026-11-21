@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Home | Sport Ticket{% endblock %}
+{% block content %}
+<section class="hero">
+    <div>
+        <h1>Find Your Favorite <span>Game</span></h1>
+        <p>Choose your sport and book your ticket now!</p>
+    </div>
+</section>
+<section class="container">
+    <h2 class="section-title">Find Games</h2>
+    <form method="GET" class="search-form">
+        <inputtype="text"name="search"placeholder="Search team or stadium..."value="{{ request.GET.search }}">
+        <select name="category">
+            <option value="">All Sports</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}     selected {% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <h2 class="section-title">Upcoming Games</h2>
+    <div class="game-grid">
+        {% for game in games %}
+            <div class="game-card">
+                <span class="sport-label">
+                    {{ game.category.name }}
+                </span>
+                <div class="teams">
+                    <div>
+                        <h3>{{ game.team_home.name }}</h3>
+                    </div>
+                    <span class="vs">VS</span>
+                    <div>
+                        <h3>{{ game.team_away.name }}</h3>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <p>📍 {{ game.stadium }}, {{ game.city }}</p>
+                    <p>📅 {{ game.date|date:"d M Y" }}</p>
+                    <p>🕒 {{ game.date|date:"H:i" }}</p>
+                </div>
+                <div class="card-bottom">
+                    <strong>{{ game.ticket_price }} TJS</strong>
+                    <a href="{% url 'game_detail' game.id %}">View Game</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No games found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

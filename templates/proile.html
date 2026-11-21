@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-left">
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt="Profile">
+            {% else %}
+                <div class="default-avatar">
+                    {{ user.username|first|upper }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="profile-right">
+            <h1>My Profile</h1>
+            <h3>{{ user.username }}</h3>
+            <p>Email: {{ user.email|default:"Not added" }}</p>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>Change Profile Picture</label>
+                <input type="file" name="image" accept="image/*">
+                <button type="submit" class="main-button">Save Profile</button>
+            </form>
+            <a href="{% url 'my_tickets' %}">My Tickets</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

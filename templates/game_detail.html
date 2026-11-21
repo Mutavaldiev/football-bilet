@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Game Detail{% endblock %}
+{% block content %}
+<div class="container detail-container">
+    <div class="detail-card">
+        <span class="sport-label">{{ game.category.name }}</span>
+        <h1 class="detail-title">Match Details</h1>
+        <div class="teams detail-teams">
+            <h2>{{ game.team_home.name }}</h2>
+            <span class="vs">VS</span>
+            <h2>{{ game.team_away.name }}</h2>
+        </div>
+        <div class="game-info">
+            <p>📍 Stadium: {{ game.stadium }}</p>
+            <p>🏙 City: {{ game.city }}</p>
+            <p>📅 Date: {{ game.date|date:"d M Y" }}</p>
+            <p>🕒 Time: {{ game.date|date:"H:i" }}</p>
+        </div>
+        <p>{{ game.description }}</p>
+        <h2 class="price">{{ game.ticket_price }} TJS</h2>
+        {% if user.is_authenticated %}
+            <a href="{% url 'buy_ticket' game.id %}" class="main-button">Buy Ticket</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="main-button">Login to Buy Ticket</a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

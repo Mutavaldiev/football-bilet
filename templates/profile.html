@@ -1,0 +1,23 @@
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Профили ман</h2>
+
+    {% if profile.image %}
+        <img src="{{ profile.image.url }}" alt="Profile" width="150">
+    {% endif %}
+
+    <h3>{{ request.user.username }}</h3>
+    <p>Email: {{ request.user.email }}</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">Сабт кардан</button>
+    </form>
+</div>
+{% endblock %}
+
